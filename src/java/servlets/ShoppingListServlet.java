@@ -46,11 +46,16 @@ public class ShoppingListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("POST Request");
-       String username= request.getParameter("username");
        
+       String username= request.getParameter("username");
+       String register= request.getParameter("registername");
+       
+       if(register!=null){
          session = request.getSession();
          session.setAttribute("username", username);
+       }
          String item=request.getParameter("item");
+       
          //it will make an arraylist of items and fech it from the session itf it exists and if not it will initialize it in the if statement
       ArrayList<String> items = (ArrayList<String>)session.getAttribute("things");
       if(items==null){
@@ -58,12 +63,12 @@ public class ShoppingListServlet extends HttpServlet {
       }
       
       if(request.getParameter("additem") != null && !(item.equals(""))){
-          session.setAttribute("username", username);
-          System.out.println("Adding item: "+item);
+        
           items.add(item);
           session.setAttribute("things", items);
       }
-      String del=request.getParameter("btnSubmet");
+    String del=request.getParameter("delete");
+    if(del!=null){
         System.out.println("delete");
         
         String radSelect = request.getParameter("radSelect");
@@ -78,9 +83,11 @@ public class ShoppingListServlet extends HttpServlet {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    
                 }
          
-         
+    }
+    
             getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp").forward(request, response);
             System.out.println("Done.");
     }
